@@ -4,22 +4,12 @@
 	<meta charset="UTF-8">
 	<title>COMP4901F Project</title>
 	<script src="https://d3js.org/d3.v5.js"></script>
+
+	<script src="js/ImportData.js"></script>
 </head>
 <body>
-	<script type="text/javascript">
-		function importData() {
-			d3.csv("data/Employee List.csv", function(d) {
-			  return {
-			    city : d.city,
-			    state : d.state,
-			    population : +d.population,
-			    land_area : +d["land area"]
-			  };
-			}, function(data) {
-			  console.log(data);
-			});
-		}
-	</script>
 	<button onclick="importData()">Import Data</button>
+	<button onclick="importData_test()">Import Data Test</button>
+	<svg width="960" height="500"></svg>
 </body>
 </html>
