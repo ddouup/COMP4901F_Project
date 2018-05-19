@@ -33,8 +33,8 @@ function gantt(data) {
         d.to = parseDate(d.to);
     });
     var margin = {top: 20, right: 50, bottom: 20, left: 100},
-        width = 1500 - margin.left - margin.right,
-        height = 1000 - margin.top - margin.bottom;
+        width = 1200 - margin.left - margin.right,
+        height = 1500 - margin.top - margin.bottom;
 
     var y = d3.scaleBand().rangeRound([0, height], .2);
 
@@ -53,7 +53,7 @@ function gantt(data) {
 
     d3.select("svg").remove();
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select("#body").append("svg")
             .attr("width", width + margin.left + margin.right)
             .attr("height", height + margin.top + margin.bottom)
             .append("g")
