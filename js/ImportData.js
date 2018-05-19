@@ -6,8 +6,11 @@ function importData() {
 	    Department: d.Department,
 	    Office: +d.Office
 	  };
-	}, function(data) {
-	  	console.log(data);
+	}).then(function(data) {
+		console.log(data);
+		if (data.Department == "Security"){
+			console.log(data);
+		}
 	});
 }
 
