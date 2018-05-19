@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gantt Chart</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+	<script type="text/javascript" src="https://d3js.org/d3.v5.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<link rel="stylesheet" href="css/jquery-ui.css" />
+	<script src="js/jquery.js"></script>
+	<script src="js/jquery-ui.js"></script>
+
+	<script>
+		$(function() {
+			$( "#from" ).datepicker({
+				defaultDate: new Date(2016, 5-1, 31),
+				minDate: new Date(2016, 5-1, 31), 
+				maxDate: new Date(2016, 6-1, 13),
+				onClose: function( selectedDate ) {
+					$( "#to" ).datepicker( "option", "minDate", selectedDate );
+				}
+			});
+			$( "#to" ).datepicker({
+				defaultDate: new Date(2016, 6-1, 13),
+				minDate: new Date(2016, 5-1, 31),
+				maxDate: new Date(2016, 6-1, 13),
+				onClose: function( selectedDate ) {
+					$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+				}
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<label for="from">From: </label>
+	<input type="text" id="from" name="from">
+	<label for="to">To: </label>
+	<input type="text" id="to" name="to">
+	<button onclick="newgantt(from.value, to.value)">Done</button>
+</body>
+<script type="text/javascript" src="js/gantt.js"></script>
+</html>
