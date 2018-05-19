@@ -2,25 +2,29 @@ var parseDate = d3.timeParse("%Y/%m/%e %H:%M");
 var inputParse = d3.timeParse("%m/%d/%Y")
 
 function newgantt(from, to) {
-    console.log(inputParse(from));
-    to = new Date(inputParse(to).getTime()+24*60*60*1000);
-    console.log(to);
-    d3.csv("data/csv/gantt.csv", function(d) {
-        if (parseDate(d.from)>=inputParse(from) && parseDate(d.to)<=to) {
-            return{
-            prox_id: d["prox-id"],
-            from: d.from,
-            to: d.to,
-            position: d.position,
-            type: d.type,
-            floor: d.floor,
-            zone: d.zone
-            };
-        }
-    }).then(function(dd){
-        console.log(dd);
-        gantt(dd);
-    });
+    if (from != "" && to != ""){  
+        console.log(inputParse(from));
+        to = new Date(inputParse(to).getTime()+24*60*60*1000);
+        console.log(to);
+        d3.csv("data/csv/gantt.csv", function(d) {
+            if (parseDate(d.from)>=inputParse(from) && parseDate(d.to)<=to) {
+                return{
+                prox_id: d["prox-id"],
+                from: d.from,
+                to: d.to,
+                position: d.position,
+                type: d.type,
+                floor: d.floor,
+                zone: d.zone
+                };
+            }
+        }).then(function(dd){
+            gantt(dd);
+        });
+    }
+    else {
+        alert("Please choose a valid date.");
+    }
 }
 
 function gantt(data) {
