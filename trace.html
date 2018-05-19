@@ -1,7 +1,7 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <link rel="stylesheet" href="jquery.range.css">
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>			
-<script src="jquery.range.js"></script>
+<script src="test/jquery.range.js"></script>
 
 <html> 
   	<head> 
@@ -163,7 +163,7 @@
                 name=proxid;
 
             }
-	    d3.csv("proxOut-MC2.csv",function(error,csvset){//name is table.csv include the x y xtarget ytarget and the last xtarget ytarget repeat
+	    d3.csv("test/proxOut-MC2.csv",function(error,csvset){//name is table.csv include the x y xtarget ytarget and the last xtarget ytarget repeat
 	    var width = 660,
 	        height = 510;
 	    var svgContainer=document.getElementById('svg');
