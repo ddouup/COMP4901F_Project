@@ -64,3 +64,7 @@ function Drawgraph(filepath,STR,COL){
 Drawgraph('data/csvjsonELEC.json','ELEC','#24b4f2');
 Drawgraph('data/csvjsonHVAC.json','HVAC','#47e55e');
 Drawgraph('data/csvjsonHEAT.json','HEAT','#c727e8');
+Drawgraph('data/csvjsonInlet.json','Inlet','#e827b7');
+Drawgraph('data/csvjsonOutlet.json','Outlet','#0bddb7');
+Drawgraph('data/csvjsonBulb.json','Bulb','#ef647e');
+
