@@ -1,60 +1,15 @@
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<link rel="stylesheet" href="jquery.range.css">
-<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>			
-<script src="test/jquery.range.js"></script>
+<link rel="stylesheet" href="css/jquery.range.css">
+<script src="js/jquery.js"></script>	
+<script src="js/jquery.range.js"></script>
 
 <html> 
   	<head> 
         <meta charset="utf-8"> 
         <title>Employee Position</title> 
   	</head>
-  	<style>
 
-
-	</style>
     <body> 
-    	<script>
-            	w = 660;
-                h = 510;
-		        function calx(coordx)
-		        {
-		        	coordx=(coordx*3078/189+115)*660/3300;
-		        	return Math.floor(coordx);
-		        }
-
-		        function caly(coordy)
-		        {
-		        	coordy=((111-coordy)*1806/111+372)*510/2550;
-		        	return Math.floor(coordy);
-		        }  
-
-		    	function DrawFloor1()
-		    	{	
-		    		document.getElementById("Floor1").style.display = 'inline';
-		    		document.getElementById("Floor2").style.display = 'none';
-					document.getElementById("Floor3").style.display = 'none';
-		    	}
-		    	function DrawFloor2()
-		    	{
-		    		document.getElementById("Floor1").style.display = 'none';
-		    		document.getElementById("Floor2").style.display = 'inline';
-					document.getElementById("Floor3").style.display = 'none';
-		    	}
-		    	function DrawFloor3()
-		    	{
-		    		document.getElementById("Floor1").style.display = 'none';
-		    		document.getElementById("Floor2").style.display = 'none';
-					document.getElementById("Floor3").style.display = 'inline';
-		    	}
-		    	function UpdateBox()
-		    	{
-		    		var value=slider.jRange("getValue");
-					value=value.split(",");
-		    		document.getElementById("Leftbox").value =value[0];
-		    		document.getElementById("Rightbox").value =value[1];
-		    	}
-		</script>
-
 		<div id='d1' style="position:absolute; top:0px; left:0px; z-index:1">  
 	        <canvas id='Floor1' width=660 height=510></canvas>
 	    </div>
@@ -84,205 +39,31 @@
 			<input type="text" value="Date" id="Rightbox"/>
 		</div>
 		<div style="position:absolute; top:500px; left:0px; z-index:3">
-			<input type="hidden" class="slider-input" value="45,65" onchange="UpdateBox()" />
+			<input type="hidden" class="slider-input" value="45,65" onchange="UpdateBox1(dataset1)" />
 		</div>
 		<div id="svg" style="position:absolute; top:0px; left:0px; z-index:2"></div>
 
-	<script>
-			var slider=$('.slider-input').jRange({
-			    from: 0,
-			    to: 100,
-			    step: 1,
-			    scale: [10,20,50,75,100],
-			    format: '%s',
-			    width: 300,
-			    showLabels: false,
-			    isRange : true
-			});
-		UpdateBox();
-		var canvasF1 = document.getElementById("Floor1");
-		var canvasF2 = document.getElementById("Floor2");
-		var canvasF3 = document.getElementById("Floor3");
-        var canvasfront =document.getElementById("canvas2");
-		var contextF1 = canvasF1.getContext("2d");
-		var contextF2 = canvasF2.getContext("2d");
-		var contextF3 = canvasF3.getContext("2d");
-		var contextfront = canvasfront.getContext("2d");
- 
-		var imgF1 = new Image();
-		var imgF2 = new Image();
-		var imgF3 = new Image();
+    </body>
+    <script type="text/javascript" src="js/trace.js">
+    </script>
+    <script type="text/javascript">
+    	start();
+    			var dataset1=new Array();
+       	        var slider=$('.slider-input').jRange({
+					    from: 0,
+					    to: 100,
+					    step: 1,
+					    scale: ["2016/6/3  19:10:00","2016/6/3  9:10:00"], //这里你要传入时间头和尾
+					    format: '%s',
+					    width: 300,
+					    showLabels: false,
+					    isRange : true
+					});	
+        var value=slider.jRange("getValue");
+					value=value.split(",");
+		    		document.getElementById("Leftbox").value =value[0];
+		    		document.getElementById("Rightbox").value =value[1];
+    	trace("2016/6/3  19:10:00","2016/6/3  9:10:00"," ebello001");//一样要传入头和尾
 
-		imgF1.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F1.jpg";
-		imgF2.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F2.jpg";
-		imgF3.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F3.jpg";
-		//3300*2550->660*510  Original coordinates:189*111 
-        imgF1.onload = function() 
-		{
-    		contextF1.drawImage(imgF1, 0, 0,660,510);
-	    }    
-	    imgF2.onload = function() 
-		{
-    		contextF2.drawImage(imgF2, 0, 0,660,510);
-	    }  
-	    imgF3.onload = function() 
-		{
-    		contextF3.drawImage(imgF3, 0, 0,660,510);
-	    }
-          //  document.getElementById("Floor1").style.display = 'none';
-	    document.getElementById("Floor2").style.display = 'none';
-		document.getElementById("Floor3").style.display = 'none';
-	    var coordx=calx(169);
-	    var coordy=caly(64);
-		contextfront.arc(coordx, coordy, 10, 0, Math.PI * 2, true);           
-        contextfront.closePath();
-        contextfront.fillStyle = 'rgba(255,48,48,0.25)';
-        contextfront.fill();
-
-
-
-
-
-
-            var NS = "http://www.w3.org/2000/svg";
-            var colorring=new Array(d3.rgb(255,0,0),d3.rgb(255,255,0),d3.rgb(0,255,0),d3.rgb(0,255,255),d3.rgb(0,0,255),d3.rgb(125,0,255));
-	    var compute=new Array();
-	    for(var i=0;i<5;i++){
-	        compute[i]= d3.interpolate(colorring[i],colorring[i+1]);
-	    }
-	    var linear = d3.scale.linear()
-	        .domain([0,30])
-	        .range([0,1]);
-            timestamp1 = new Date('2016/6/3  19:10:00');
-            timestamp2 = new Date('2016/6/3  9:10:00');
-            name=" ebello001";
-            function settrace(t1,t2,proxid)
-            {
-                timestamp1=t1;
-                timestamp2=t2;
-                name=proxid;
-
-            }
-	    d3.csv("test/proxOut-MC2.csv",function(error,csvset){//name is table.csv include the x y xtarget ytarget and the last xtarget ytarget repeat
-	    var width = 660,
-	        height = 510;
-	    var svgContainer=document.getElementById('svg');
-	    var svg = d3.select(svgContainer).append("svg")
-	        .attr("width", width)
-	        .attr("height", height);
-            dataset=   new Array();
-
-            for(var i = 0, len = csvset.length; i < len-1; i++){
-                csvset[i].timestamp = Date.parse(new Date(csvset[i].timestamp));
-                    if(csvset[i].proxid==name&&csvset[i].timestamp-timestamp2>0&&csvset[i].timestamp-timestamp1<0){
-                        csvset[i].x=Number(csvset[i].x)+Math.random()*5;
-                        csvset[i].y=Number(csvset[i].y)+Math.random()*5;
-                        console.log(csvset[i].x);
-                        dataset.push(csvset[i]);
-
-                }}
-//            var cirSVG = function(cx, cy, fill){
-//                var tempSVG = document.createElementNS(NS, "circle");
-//                tempSVG.setAttribute('cx',cx);
-//                tempSVG.setAttribute('cy', cy);
-//                tempSVG.setAttribute('stroke', "black");
-//                tempSVG.setAttribute('stroke', 2);
-//                tempSVG.setAttribute('r', 5);
-//                tempSVG.setAttribute('fill', fill);
-//                return tempSVG;
-//            }
-//            var linSVG = function(x1, x2,y1,y2){
-//                var tempSVG = document.createElementNS(NS, 'line');
-//                tempSVG.setAttribute('x1',x1);
-//                tempSVG.setAttribute('y1', y1);
-//                tempSVG.setAttribute('x2',x2);
-//                tempSVG.setAttribute('y2', y2);
-//                tempSVG.setAttribute('stroke-width', 2);
-//                tempSVG.setAttribute('stroke', "black");
-//                tempSVG.style.fill = "black";
-//                return tempSVG;
-//            }
-////
-//                var svgContainer = document.getElementById("svg");
-//                var barHeightTotal = svgContainer.clientHeight;
-//                var barWidthTotal = svgContainer.clientWidth;
-//
-//                var svg = document.createElementNS(NS, "svg");  //create an svg element
-//                svg.setAttribute('width', barWidthTotal);
-//                svg.setAttribute('height', barHeightTotal);
-//                svgContainer.appendChild(svg);  //append the svg element to the container
-//
-//            console.log(dataset.length);
-//                for(var i = 0, len = dataset.length; i < len-1; i++){
-//                    //if(dataset[i]. prox-id==" earpa001"){
-//                    var cir = cirSVG(dataset[i].x,dataset[i].y,"red");
-//                    svg.appendChild(cir);
-//                }
-
-
-            svg.selectAll("line")
-                .data(dataset)
-                .enter()
-                .append("line")
-                .attr("x1", function (d,i) {
-                    if(i<dataset.length-1)
-                    	return calx(dataset[i+1].x);
-                    else return calx(d.x);
-                })
-                .attr("x2", function (d) {
-                    return calx(d.x);
-                })
-                .attr("y1", function (d,i) {
-                    if(i<dataset.length-1)
-                        return caly(dataset[i+1].y);
-                    else
-                        return caly(d.y);
-                })
-                .attr("y2", function (d) {
-                    return caly(d.y);
-                })
-                .attr("stroke-width", 2)
-                .attr("stroke",   "black")
-
-            svg.selectAll("circle")
-                .data(dataset)
-                .enter()
-                .append("circle")
-                .attr("cx", function(d) {
-                    return calx(d.x);
-                })
-                .attr("cy",function(d) {
-                    return caly(d.y);
-                })
-                .attr("fill", function (d,i) {
-                    //console.log(i);
-                    return compute[Math.floor(i*5/(dataset.length))]((i-Math.floor(i*5/(dataset.length))*(dataset.length/5))/(dataset.length/5));
-                })
-
-                .attr("stroke", "black")
-                .attr("stroke-width", 1)
-                .attr("r", 4);
-//The display function
-
-
-
-	//        svg.selectAll("text")
-	//            .data(dataset)
-	//            .enter()
-	//            .append("text")
-	//            .text(function(d) {
-	//                return d[0] + "," + d[1];
-	//            })
-	//            .attr("x", function(d) {
-	//                return d[0];
-	//            })
-	//            .attr("y", function(d) {
-	//                return d[1];
-	//            })
-	//            .attr("font-family", "sans-serif")
-	//            .attr("font-size", "11px")
-	//            .attr("fill", "red");
-	    });
-	</script>>
-    </body> 
+    </script>> 
 </html>
