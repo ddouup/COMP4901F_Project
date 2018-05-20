@@ -96,7 +96,8 @@
             <label for="to">To: </label>
             <input type="text" id="to" name="to">
             <label>Prox Id: </label>
-            <select id="prox" name="prox">
+            <select id="prox" name="prox" selected="all">
+				<option value="all">all</option>
 				<option value=" vawelon001">vawelon001</option>
 				<option value=" earpa001">earpa001</option>
 				<option value=" acampo001">acampo001</option>
@@ -211,7 +212,7 @@
 				<option value=" lbagani001">lbagani001</option>
 				<option value=" tsong001">tsong001</option>
 			</select>
-            <button onclick="newgantt(from.value, to.value), trace(from.value, to.value, prox.value)">Done</button>
+            <button onclick="newgantt(from.value, to.value, prox.value), trace(from.value, to.value, prox.value)">Done</button>
         </div>
       </div>
       <div class="card">
@@ -278,21 +279,20 @@
 <script type="text/javascript" src="js/gantt.js"></script>
 <script type="text/javascript" src="js/trace.js"></script>
 <script type="text/javascript">
-    	start();
-    			var dataset1=new Array();
-       	        var slider=$('.slider-input').jRange({
-					    from: 0,
-					    to: 100,
-					    step: 1,
-					    scale: [from.value,to.value],
-					    format: '%s',
-					    width: 300,
-					    showLabels: false,
-					    isRange : true
-					});	
-        var value=slider.jRange("getValue");
-					value=value.split(",");
-		    		document.getElementById("Leftbox").value =value[0];
-		    		document.getElementById("Rightbox").value =value[1];
+	start();
+	var slider=$('.slider-input').jRange({
+		from: 0,
+		to: 100,
+		step: 1,
+		scale: [$('#from').val(), $('#to').val()],
+		format: '%s',
+		width: 300,
+		showLabels: false,
+		isRange : true
+	});	
+	var value=slider.jRange("getValue");
+	value=value.split(",");
+	document.getElementById("Leftbox").value =value[0];
+	document.getElementById("Rightbox").value =value[1];
 </script>
 </html>

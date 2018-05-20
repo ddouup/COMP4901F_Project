@@ -76,34 +76,36 @@
     	var inputParse = d3.timeParse("%m/%d/%Y")
     	function trace(StartIndex,EndIndex,ID)
 		{
-			console.log(StartIndex);
-			console.log(EndIndex);
-			console.log(ID);
-		    w = 660;
-            h = 510;
-            var linear = d3.scaleLinear()
-	        .domain([0,30])
-	        .range([0,1]);
-            timestamp1 = inputParse(StartIndex);
-			timestamp2 = new Date(inputParse(EndIndex).getTime()+24*60*60*1000);
-            var dataset=   new Array();
-            name=ID;
-            dataset1=new Array();
-            d3.csv("data/trace.csv",function(d){
-            	return d;
-            }).then(function(csvset){	            
-	            for(var i = 0, len = csvset.length; i < len; i++){
-	                csvset[i].timestamp = new Date(csvset[i].timestamp);
-	                    if(csvset[i].proxid==name&&csvset[i].timestamp<=timestamp2&&csvset[i].timestamp>=timestamp1){
-	                        csvset[i].x=Number(csvset[i].x)+Math.random()*4-2;
-	                        csvset[i].y=Number(csvset[i].y)+Math.random()*4-2;
-	                        dataset1.push(csvset[i]);
-	            	}}
-	            console.log(dataset1);
-                var range='0,'+(dataset1.length-1);
-                $('.slider-input').jRange('updateRange', range,range);
-            	UpdateBox1(dataset1);
-			});
+			if (ID!="all"){
+				console.log(StartIndex);
+				console.log(EndIndex);
+				console.log(ID);
+			    w = 660;
+	            h = 510;
+	            var linear = d3.scaleLinear()
+		        .domain([0,30])
+		        .range([0,1]);
+	            timestamp1 = inputParse(StartIndex);
+				timestamp2 = new Date(inputParse(EndIndex).getTime()+24*60*60*1000);
+	            var dataset=   new Array();
+	            name=ID;
+	            dataset1=new Array();
+	            d3.csv("data/trace.csv",function(d){
+	            	return d;
+	            }).then(function(csvset){	            
+		            for(var i = 0, len = csvset.length; i < len; i++){
+		                csvset[i].timestamp = new Date(csvset[i].timestamp);
+		                    if(csvset[i].proxid==name&&csvset[i].timestamp<=timestamp2&&csvset[i].timestamp>=timestamp1){
+		                        csvset[i].x=Number(csvset[i].x)+Math.random()*4-2;
+		                        csvset[i].y=Number(csvset[i].y)+Math.random()*4-2;
+		                        dataset1.push(csvset[i]);
+		            	}}
+		            console.log(dataset1);
+	                var range='0,'+(dataset1.length-1);
+	                $('.slider-input').jRange('updateRange', range,range);
+	            	UpdateBox1(dataset1);
+				});
+			}
 		}
 
     	function UpdateBox1(set)

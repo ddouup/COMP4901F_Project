@@ -1,22 +1,40 @@
 var parseDate = d3.timeParse("%Y/%m/%e %H:%M");
 var inputParse = d3.timeParse("%m/%d/%Y")
+var H = 0;
 
-function newgantt(from, to) {
+function newgantt(from, to, id) {
     if (from != "" && to != ""){  
         console.log(inputParse(from));
         to = new Date(inputParse(to).getTime()+24*60*60*1000);
         console.log(to);
         d3.csv("data/csv/gantt.csv", function(d) {
             if (parseDate(d.from)>=inputParse(from) && parseDate(d.to)<=to) {
-                return{
-                prox_id: d["prox-id"],
-                from: d.from,
-                to: d.to,
-                position: d.position,
-                type: d.type,
-                floor: d.floor,
-                zone: d.zone
-                };
+                if (id == "all"){
+                    H = 1500;
+                    return{
+                        prox_id: d["prox-id"],
+                        from: d.from,
+                        to: d.to,
+                        position: d.position,
+                        type: d.type,
+                        floor: d.floor,
+                        zone: d.zone
+                    };
+                }
+                else{
+                    if (d["prox-id"]==id.replace(/\s+/g,"")){
+                        H = 100;  
+                        return{
+                            prox_id: d["prox-id"],
+                            from: d.from,
+                            to: d.to,
+                            position: d.position,
+                            type: d.type,
+                            floor: d.floor,
+                            zone: d.zone
+                        };
+                    }
+                }
             }
         }).then(function(dd){
             gantt(dd);
@@ -39,7 +57,7 @@ function gantt(data) {
     });
     var margin = {top: 20, right: 50, bottom: 20, left: 100},
         width = 1200 - margin.left - margin.right,
-        height = 1500 - margin.top - margin.bottom;
+        height = H - margin.top - margin.bottom;
 
     var y = d3.scaleBand().rangeRound([0, height], .2);
 
@@ -60,9 +78,9 @@ function gantt(data) {
 
     var svg = d3.select("#body").append("svg")
             .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
+            .attr("height", height + margin.top*2.5 + margin.bottom)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + margin.left + "," + margin.top*2.5 + ")");
 
         svg.append("g")
             .attr("class", "x axis")
@@ -98,7 +116,7 @@ function gantt(data) {
             .enter()
             .append("rect")
             .attr("x", width-margin.left-margin.right-25)
-            .attr("y", function(d, i){ return -margin.top/2 + i*20;})
+            .attr("y", function(d, i){ return -margin.top*2 + i*20;})
             .attr("width", 10)
             .attr("height", 10)
             .style("fill", function(d,i) {
@@ -110,7 +128,7 @@ function gantt(data) {
             .enter()
             .append("text")
             .attr("x", width-margin.left-margin.right)
-            .attr("y", function(d, i){ return -margin.top/2 + i*20 + 10;})
+            .attr("y", function(d, i){ return -margin.top*2 + i*20 + 10;})
             .text(function(d,i){return types_of_statuses[i]});
 
 
