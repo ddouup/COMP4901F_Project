@@ -30,6 +30,7 @@ function newgantt(from, to) {
 function gantt(data) {
         
     var types_of_statuses = ["In Office","Out of Office"];
+    
     var statuses_color = ["#99ccff","#ff99cc"];
 
     data.forEach(function(d) {

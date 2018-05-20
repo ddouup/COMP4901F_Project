@@ -1,128 +1,130 @@
-		        function calx(coordx)
-		        {
-		        	coordx=(coordx*3078/189+115)*660/3300;
-		        	return Math.floor(coordx);
-		        }
+        function calx(coordx)
+        {
+        	coordx=(coordx*3078/189+115)*660/3300;
+        	return Math.floor(coordx);
+        }
+        function caly(coordy)
+        {
+        	coordy=((111-coordy)*1806/111+372)*510/2550;
+        	return Math.floor(coordy);
+        }  
+    	function DrawFloor1()
+    	{	
+    		document.getElementById("Floor1").style.display = 'inline';
+    		document.getElementById("Floor2").style.display = 'none';
+			document.getElementById("Floor3").style.display = 'none';
+            UpdateBox1(dataset1);
+    	}
+    	function DrawFloor2()
+    	{
+    		document.getElementById("Floor1").style.display = 'none';
+    		document.getElementById("Floor2").style.display = 'inline';
+			document.getElementById("Floor3").style.display = 'none';
+            UpdateBox1(dataset1);
+    	}
+    	function DrawFloor3()
+    	{
+    		document.getElementById("Floor1").style.display = 'none';
+    		document.getElementById("Floor2").style.display = 'none';
+			document.getElementById("Floor3").style.display = 'inline';
+            UpdateBox1(dataset1);
+    	}
+    	function UpdateBox()
+    	{
+    		var value=slider.jRange("getValue");
+			value=value.split(",");
+    		document.getElementById("Leftbox").value =value[0];
+    		document.getElementById("Rightbox").value =value[1];
+    	}
 
-		        function caly(coordy)
-		        {
-		        	coordy=((111-coordy)*1806/111+372)*510/2550;
-		        	return Math.floor(coordy);
-		        }  
+    	function start()
+    	{
+    	var canvasF1 = document.getElementById("Floor1");
+		var canvasF2 = document.getElementById("Floor2");
+		var canvasF3 = document.getElementById("Floor3");
+        var canvasfront =document.getElementById("canvas2");
+		var contextF1 = canvasF1.getContext("2d");
+		var contextF2 = canvasF2.getContext("2d");
+		var contextF3 = canvasF3.getContext("2d");
+		var contextfront = canvasfront.getContext("2d");
+ 
+		var imgF1 = new Image();
+		var imgF2 = new Image();
+		var imgF3 = new Image();
 
-		    	function DrawFloor1()
-		    	{	
-		    		document.getElementById("Floor1").style.display = 'inline';
-		    		document.getElementById("Floor2").style.display = 'none';
-					document.getElementById("Floor3").style.display = 'none';
-                    UpdateBox1(dataset1);
-		    	}
-		    	function DrawFloor2()
-		    	{
-		    		document.getElementById("Floor1").style.display = 'none';
-		    		document.getElementById("Floor2").style.display = 'inline';
-					document.getElementById("Floor3").style.display = 'none';
-                    UpdateBox1(dataset1);
-		    	}
-		    	function DrawFloor3()
-		    	{
-		    		document.getElementById("Floor1").style.display = 'none';
-		    		document.getElementById("Floor2").style.display = 'none';
-					document.getElementById("Floor3").style.display = 'inline';
-                    UpdateBox1(dataset1);
-		    	}
-		    	function UpdateBox()
-		    	{
-		    		var value=slider.jRange("getValue");
-					value=value.split(",");
-		    		document.getElementById("Leftbox").value =value[0];
-		    		document.getElementById("Rightbox").value =value[1];
-		    	}
+		imgF1.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F1.jpg";
+		imgF2.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F2.jpg";
+		imgF3.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F3.jpg";
+		//3300*2550->660*510  Original coordinates:189*111 
+        imgF1.onload = function() 
+		{
+    		contextF1.drawImage(imgF1, 0, 0,660,510);
+	    }    
+	    imgF2.onload = function() 
+		{
+    		contextF2.drawImage(imgF2, 0, 0,660,510);
+	    }  
+	    imgF3.onload = function() 
+		{
+    		contextF3.drawImage(imgF3, 0, 0,660,510);
+	    }
+          //  document.getElementById("Floor1").style.display = 'none';
+	    document.getElementById("Floor2").style.display = 'none';
+		document.getElementById("Floor3").style.display = 'none';
+    	}
 
+    	var inputParse = d3.timeParse("%m/%d/%Y")
+    	function trace(StartIndex,EndIndex,ID)
+		{
+			console.log(StartIndex);
+			console.log(EndIndex);
+			console.log(ID);
+		    w = 660;
+            h = 510;
+            var linear = d3.scaleLinear()
+	        .domain([0,30])
+	        .range([0,1]);
+            timestamp1 = inputParse(StartIndex);
+			timestamp2 = new Date(inputParse(EndIndex).getTime()+24*60*60*1000);
+            var dataset=   new Array();
+            name=ID;
+            dataset1=new Array();
+            d3.csv("data/trace.csv",function(d){
+            	return d;
+            }).then(function(csvset){	            
+	            for(var i = 0, len = csvset.length; i < len; i++){
+	                csvset[i].timestamp = new Date(csvset[i].timestamp);
+	                    if(csvset[i].proxid==name&&csvset[i].timestamp<=timestamp2&&csvset[i].timestamp>=timestamp1){
+	                        csvset[i].x=Number(csvset[i].x)+Math.random()*4-2;
+	                        csvset[i].y=Number(csvset[i].y)+Math.random()*4-2;
+	                        dataset1.push(csvset[i]);
+	            	}}
+	            console.log(dataset1);
+                var range='0,'+(dataset1.length-1);
+                $('.slider-input').jRange('updateRange', range,range);
+            	UpdateBox1(dataset1);
+			});
+		}
 
-		    	function start()
-		    	{
-		    	var canvasF1 = document.getElementById("Floor1");
-				var canvasF2 = document.getElementById("Floor2");
-				var canvasF3 = document.getElementById("Floor3");
-		        var canvasfront =document.getElementById("canvas2");
-				var contextF1 = canvasF1.getContext("2d");
-				var contextF2 = canvasF2.getContext("2d");
-				var contextF3 = canvasF3.getContext("2d");
-				var contextfront = canvasfront.getContext("2d");
-		 
-				var imgF1 = new Image();
-				var imgF2 = new Image();
-				var imgF3 = new Image();
-
-				imgF1.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F1.jpg";
-				imgF2.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F2.jpg";
-				imgF3.src="https://raw.githubusercontent.com/ddouup/COMP4901F_Project/master/data/FloorPlan/VAST_Basic_F3.jpg";
-				//3300*2550->660*510  Original coordinates:189*111 
-		        imgF1.onload = function() 
-				{
-		    		contextF1.drawImage(imgF1, 0, 0,660,510);
-			    }    
-			    imgF2.onload = function() 
-				{
-		    		contextF2.drawImage(imgF2, 0, 0,660,510);
-			    }  
-			    imgF3.onload = function() 
-				{
-		    		contextF3.drawImage(imgF3, 0, 0,660,510);
-			    }
-		          //  document.getElementById("Floor1").style.display = 'none';
-			    document.getElementById("Floor2").style.display = 'none';
-				document.getElementById("Floor3").style.display = 'none';
-		    	}
-
-				function trace(StartIndex,EndIndex,ID)
-				{
-				    w = 660;
-		            h = 510;
-
-			    var linear = d3.scale.linear()
-			        .domain([0,30])
-			        .range([0,1]);
-		            timestamp1 = new Date(StartIndex);
-		            timestamp2 = new Date(EndIndex);
-		            var dataset=   new Array();
-		            name=ID;
-		            dataset1=new Array();
-		            d3.csv("data/trace.csv",function(error,csvset){		            
-		            for(var i = 0, len = csvset.length; i < len; i++){
-		                csvset[i].timestamp = new Date(csvset[i].timestamp);
-		                    if(csvset[i].proxid==name&&csvset[i].timestamp-timestamp2>=0&&csvset[i].timestamp-timestamp1<=0){
-		                        csvset[i].x=Number(csvset[i].x)+Math.random()*4-2;
-		                        csvset[i].y=Number(csvset[i].y)+Math.random()*4-2;
-		                        dataset1.push(csvset[i]);
-		                }}
-
-		                var range='0,'+(dataset1.length-1);
-		                $('.slider-input').jRange('updateRange', range,range);
-		            UpdateBox1(dataset1);
-				});
-				}
-
-		    	function UpdateBox1(set)
-		    	{
-		    		if(set.length>0)
-		    		{
-		    		var value=slider.jRange("getValue");
-					value=value.split(",");
-					Date1 = new Date(set[value[0]].timestamp);
-					Date2 = new Date(set[value[1]].timestamp);
-		    		document.getElementById("Leftbox").value =Date1;
-		    		document.getElementById("Rightbox").value =Date2;
-		    		huahua(set,Date1,Date2);
-		    		}
-		    	}
+    	function UpdateBox1(set)
+    	{
+    		if(set.length>0)
+    		{
+    		var value=slider.jRange("getValue");
+			value=value.split(",");
+			Date1 = new Date(set[value[0]].timestamp);
+			Date2 = new Date(set[value[1]].timestamp);
+    		document.getElementById("Leftbox").value =Date1;
+    		document.getElementById("Rightbox").value =Date2;
+    		huahua(set,Date1,Date2);
+    		}
+    	}
 
 
 
 				function huahua(csvset,timestamp1,timestamp2)
 				{
-                    d3.selectAll("svg").remove();
+                    d3.selectAll("#trace").remove();
                     //d3.selectAll("circle").remove();
                     timestamp1=new Date(timestamp1);
                     timestamp2=new Date(timestamp2);
@@ -138,7 +140,7 @@
 			        height = 510;
 			    var svgContainer=document.getElementById('svg');
 			    var svg = d3.select(svgContainer).append("svg")
-
+			    		.attr("id", "trace")
                         .attr("width", width)
                         .attr("height", height);
 
